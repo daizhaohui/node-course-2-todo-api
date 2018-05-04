@@ -11,15 +11,19 @@ app.use(bodyParser.json());
 app.post('/todo',(req,res)=>{
 
     var todo = new Todo({
-        text:JSON.stringify(req.body),
+        //text:JSON.stringify(req.body),
         completedAt:1
     });
-    todo.save().then(doc=>{
-        console.log('todo saved:',doc);
-        res.send(doc);
-    },e=>{
-        console.log('unable to save todo:',e)
-    })
+
+    todo.save(function(err,doc){
+       if(err){
+           console.log('unable to save todo:',err)
+           res.send(err);
+       } else {
+           console.log('todo saved:',doc);
+           res.send(doc);
+       }
+    });
 
 });
 
